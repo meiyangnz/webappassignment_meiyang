@@ -33,10 +33,21 @@ def getCursor():
 
 @app.route("/")
 def home():
-    return redirect("/currentjobs")
+    return redirect(url_for("/currentjobs"))
 
 @app.route("/currentjobs")
 def currentjobs():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(""
+    SELECT j.job_id, CONTACT(c.first_name, '', c.family_name) AS customer_name, j.job_date
+    FROM job jobList
+    JOIN customer c ON j.customer = c.customer_id
+    WHERE j.completed = 0;
+    "")
+    jobs = cursor.fetchall()
+    cursor.close()
+    conn.close()
     connection = getCursor()
     connection.execute("SELECT job_id,customer,job_date FROM job where completed=0;")
     jobList = connection.fetchall()
