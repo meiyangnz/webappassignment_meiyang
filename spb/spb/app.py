@@ -14,6 +14,14 @@ app = Flask(__name__)
 dbconn = None
 connection = None
 
+def get_db_connection():
+    connection = mysql.connector.connect(user=connect.dbuser,
+                                         password=connect.dbpass,
+                                         host=connect.dbhost,
+                                         database=connect.dbname,
+                                         autocommit=True)
+    return connection
+
 def getCursor():
     global dbconn
     global connection
