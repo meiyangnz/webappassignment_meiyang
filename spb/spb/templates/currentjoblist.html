@@ -6,17 +6,31 @@
 <!-- code to display list of jobs-->
 <table>
     <tr>
-        <th>Job ID</th>
-        <th>Customer ID</th>
-        <th>Date</th>
+        <th scope="col">Job ID</th>
+        <th scope="col">Customer ID</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
     </tr>
     {% for job in job_list %}
         <tr>
             {% for field in job %}
                 <td>{{field}}</td>
             {% endfor %}
+            <th scope="row">{{ job.job_id }}</th>
+                <td>{{ job.customer_name }}</td>
+                <td>{{ job.job_date.strftime('%Y-%m-%d') }}</td>
+                <td>
+                    <a href="{{ url_for('job_details', job_id=job.job_id) }}" class="btn btn-primary btn-sm">Details</a>
+                </td>
         </tr>
     {% endfor %}
+    </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="text-center">No current jobs found.</td>
+            </tr>
+            {% endfor %}
+    
 </table>
 
 {% endblock %}

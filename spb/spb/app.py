@@ -94,3 +94,20 @@ if __name__ == "__main__":
 
 def admin_home():
     return render_template('admin_home.html')
+
+
+@app.route('/currentjobs')
+def current_jobs():
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT j.job_id, CONCAT(c.first_name, ' ', c.family_name) AS customer_name, j.job_date
+        FROM job j
+        JOIN customer c ON j.customer_id = c.customer_id
+        WHERE j.completed = 0
+        ORDER BY j.job_date DESC;
+    """)
+    jobs = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return render_template('current_jobs.html', current_jobs=jobs)
