@@ -111,3 +111,7 @@ def current_jobs():
     cursor.close()
     conn.close()
     return render_template('current_jobs.html', current_jobs=jobs)
+
+@app.route('/job/<int:job_id')
+def job_details(job_id):
+    return render_template('job_details.html', job=job,job_services=job_services,job_parts=job_parts, all_services=all_services, all_parts=all_parts)
