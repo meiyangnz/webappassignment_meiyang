@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+    <div class="list-group">
+        <a href="{{ url_for('current_jobs') }}" class="list-group-item list-group-item-action">View Current Jobs</a>
+        <a href="{{ url_for('add_customer') }}" class="list-group-item list-group-item-action">Add Customer</a>
+        <a href="{{ url_for('add_part') }}" class="list-group-item list-group-item-action">Add Part</a>
+        <a href="{{ url_for('add_service') }}" class="list-group-item list-group-item-action">Add Service</a>
+        <a href="{{ url_for('schedule_job') }}" class="list-group-item list-group-item-action">Schedule Job</a>
+        <a href="{{ url_for('unpaid_bills') }}" class="list-group-item list-group-item-action">Manage Unpaid Bills</a>
+        <a href="{{ url_for('overdue_bills') }}" class="list-group-item list-group-item-action">View Overdue Bills</a>
+        <a href="{{ url_for('customer_list_search') }}" class="list-group-item list-group-item-action">Customer List & Search</a>
+    </div>
+</div>
+{% endblock %}

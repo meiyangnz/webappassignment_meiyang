@@ -40,7 +40,7 @@ def currentjobs():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute(""
-    SELECT j.job_id, CONTACT(c.first_name, '', c.family_name) AS customer_name, j.job_date
+    SELECT j.job_id, CONCAT(c.first_name, '', c.family_name) AS customer_name, j.job_date
     FROM job jobList
     JOIN customer c ON j.customer = c.customer_id
     WHERE j.completed = 0;
@@ -48,10 +48,49 @@ def currentjobs():
     jobs = cursor.fetchall()
     cursor.close()
     conn.close()
-    connection = getCursor()
-    connection.execute("SELECT job_id,customer,job_date FROM job where completed=0;")
-    jobList = connection.fetchall()
     return render_template("currentjoblist.html", job_list = jobList)    
 
+@app.route("/job/<int:job_id>",methods=['GET','POST'])
+def job_details(job_id):
+    conn = get_db_connection()
+    cursor = con.cursor()
+    if request.method == 'POST':
+        pass
 
+    cursor.execute("SELECT * FROM job Where job_id = %s", (job_id))
+    job = cursor.fetchone()
 
+    #fetch parts and services related to this job
+
+    cursor.close()
+    conn.close()
+    return render_template("job_details.html", job=job)
+
+# Admin Interface Routes
+
+@app.route ("/addcustomer", methods = ['GET','POST'])
+
+def add_customer():
+    if request.method == 'POST':
+        # Handle new customer addition
+        first_name = request.form['first_name']
+        family_name = request.form['family_name']
+        email = request.form['email']
+        phone = request.form['phone']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO customer (first_name, family_name, email, phone) VALUES (%s, %s, %s, %s)",
+                       (first_name, family_name, email, phone))
+        cursor.close()
+        conn.close()
+        flash('Customer added successfully!')
+        return redirect(url_for('add_customer'))
+    return render_template("add_customer.html")
+
+# Add routes for adding services, parts, managing jobs etc. as per your project needs
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+def admin_home():
+    return render_template('admin_home.html')
