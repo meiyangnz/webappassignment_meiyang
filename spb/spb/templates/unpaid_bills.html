@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Unpaid Bills</h2>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Job ID</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Job Date</th>
+                <th scope="col">Total Cost</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in unpaid_bills %}
+            <tr>
+                <th scope="row">{{ bill.job_id }}</th>
+                <td>{{ bill.customer_name }}</td>
+                <td>{{ bill.job_date.strftime('%Y-%m-%d') }}</td>
+                <td>${{ "%.2f"|format(bill.total_cost) }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('mark_as_paid', job_id=bill.job_id) }}">
+                        <input type="hidden" name="job_id" value="{{ bill.job_id }}">
+                        <button type="submit" class="btn btn-success btn-sm">Mark as Paid</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No unpaid bills found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

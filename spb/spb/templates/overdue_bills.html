@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Overdue Bills</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Job ID</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Job Date</th>
+                <th scope="col">Total Cost</th>
+                <th scope="col">Days Overdue</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr class="{{ 'table-danger' if bill.is_overdue else '' }}">
+                <td>{{ bill.job_id }}</td>
+                <td>{{ bill.customer_name }}</td>
+                <td>{{ bill.job_date.strftime('%Y-%m-%d') }}</td>
+                <td>${{ "%.2f"|format(bill.total_cost) }}</td>
+                <td>{{ bill.days_overdue }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('record_payment', job_id=bill.job_id) }}">
+                        <input type="hidden" name="job_id" value="{{ bill.job_id }}">
+                        <button type="submit" class="btn btn-success btn-sm">Record Payment</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No overdue bills found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

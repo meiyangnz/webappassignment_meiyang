@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Schedule New Job</h2>
+    <form method="POST" action="{{ url_for('schedule_job') }}">
+        <div class="form-group">
+            <label for="customer_id">Customer</label>
+            <select class="form-control" id="customer_id" name="customer_id" required>
+                {% for customer in customers %}
+                <option value="{{ customer.customer_id }}">{{ customer.first_name }} {{ customer.family_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="job_date">Job Date</label>
+            <input type="date" class="form-control" id="job_date" name="job_date" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Schedule Job</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Customer List & Search</h2>
+
+
+    <form method="GET" action="{{ url_for('customer_search_results') }}" class="mb-4">
+        <div class="form-group">
+            <label for="search_query">Search Customers</label>
+            <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Enter part of a name">
+            <small class="form-text text-muted">You can search by typing any part of the first or last name.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Customer ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.customer_id }}</td>
+                <td>{{ customer.first_name }}</td>
+                <td>{{ customer.last_name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phone }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" class="text-center">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
